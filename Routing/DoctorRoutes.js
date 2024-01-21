@@ -14,9 +14,9 @@ const medicine = require('../Models/medecinModel')
 
 //creating doctor object - SIGN UP -- 
 router.post("/signup",async(req,res) => {
-    const {registrationNumber,specialization,name,phone_no,password} =req.body
+    const {registrationNumber,specialization,name,password} =req.body
 
-    if(!registrationNumber ||!specialization|| !name || !phone_no || !password){
+    if(!registrationNumber ||!specialization|| !name ||  !password){
         return res.status(400).json({error:"name, phone number and password are required."})
     }
     try {
@@ -27,7 +27,7 @@ router.post("/signup",async(req,res) => {
         }
 
         //create new doctor 
-        const newDoctor=new doctor({registrationNumber,specialization,name,phone_no,password})
+        const newDoctor=new doctor({registrationNumber,specialization,name,password})
         await newDoctor.save()
         res.status(200).json({message: "User Account created successfully!!.. "})
 
@@ -167,8 +167,8 @@ router.get('/profile', authenticateTokenDoc, async (req, res) => {
             return res.status(404).json({ error: 'Patient not found' })
         }
 
-        const {name,registrationNumber,phone_no}=foundDoctor
-        const extractedData = {name,registrationNumber,phone_no}
+        const {name,registrationNumber,specialization}=foundDoctor
+        const extractedData = {name,registrationNumber,specialization}
 
         // Respond with the patient details
         res.status(200).json(extractedData)
