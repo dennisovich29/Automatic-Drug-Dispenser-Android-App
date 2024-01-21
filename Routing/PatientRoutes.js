@@ -30,10 +30,11 @@ router.post("/signup",async(req,res) => {
         }
 
         //create new patient 
-        const newPatinet=new patient({name,phone_no,password,uniqueId:generateRandomNumber()})
+        const generatedUniqueId = generateRandomNumber()
+        const newPatinet=new patient({name,phone_no,password,uniqueId:generatedUniqueId})
         await newPatinet.save()
-        res.status(200).json({message: "User registration successful!!.. "})
-
+        res.status(200).json({UniqueId : generatedUniqueId})
+        
     } catch (error) {
         res.status(500).json({error:"Internal Server Error",details:error.message})
     }
