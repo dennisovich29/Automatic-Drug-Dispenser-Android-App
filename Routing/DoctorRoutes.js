@@ -14,10 +14,10 @@ const medicine = require('../Models/medecinModel')
 
 //creating doctor object - SIGN UP -- 
 router.post("/signup",async(req,res) => {
-    const {registrationNumber,specialization,name,password} =req.body
+    const {registrationNumber,specialization,name,phone_no,password} =req.body
 
-    if(!registrationNumber ||!specialization|| !name || !password){
-        return res.status(400).json({error:"name,registration number,specialization and password are required."})
+    if(!registrationNumber ||!specialization|| !name || !phone_no || !password){
+        return res.status(400).json({error:"name, phone number and password are required."})
     }
     try {
         //check registration number exists 
@@ -27,7 +27,7 @@ router.post("/signup",async(req,res) => {
         }
 
         //create new doctor 
-        const newDoctor=new doctor({registrationNumber,specialization,name,password})
+        const newDoctor=new doctor({registrationNumber,specialization,name,phone_no,password})
         await newDoctor.save()
         res.status(200).json({message: "User Account created successfully!!.. "})
 
@@ -44,7 +44,7 @@ router.post("/login",async(req,res) => {
     try {
         const foundDoctor = await doctor.findOne({registrationNumber})
         if (!foundDoctor){
-            return res.status(400).json({error:"Invalid registration number or password !!!.."})
+            return res.status(400).json({error:"Invalid uniqueId or password !!!.."})
         }
         //compare typed password with existing password
         const isPasswordValid=await foundDoctor.comparePassword(password)
@@ -122,7 +122,7 @@ router.post('/addMedicines/:uniqueId',authenticateTokenDoc, async (req, res) => 
         
         const newPrescription = {
             sent_to:{name: patientFound.name,uniqueId:patientFound.uniqueId},
-            sent_by:{name:currentDoc.name,registrationNumber:currentDoc.registrationNumber,specialization:currentDoc.specialization},
+            sent_by:{name:currentDoc.name,registrationNumber:currentDoc.registrationNumber},
             Medicines: [],
             sent: true,
         }
@@ -133,7 +133,7 @@ router.post('/addMedicines/:uniqueId',authenticateTokenDoc, async (req, res) => 
             const Medicine = await medicine.findOne({ name, mg })
             if (Medicine) {
                 newPrescription.Medicines.push({
-                    Medicine: Medicine.name,
+                    Medicine_name: Medicine.name,
                     mg:Medicine.mg,
                     quantity,
                     price:Medicine.price * quantity
@@ -167,8 +167,8 @@ router.get('/profile', authenticateTokenDoc, async (req, res) => {
             return res.status(404).json({ error: 'Patient not found' })
         }
 
-        const {name,registrationNumber,specialization}=foundDoctor
-        const extractedData = {name,registrationNumber,specialization}
+        const {name,registrationNumber,phone_no}=foundDoctor
+        const extractedData = {name,registrationNumber,phone_no}
 
         // Respond with the patient details
         res.status(200).json(extractedData)
