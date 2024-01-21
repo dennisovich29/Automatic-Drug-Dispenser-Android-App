@@ -19,13 +19,10 @@ const medicineSchema = new mongoose.Schema(
             default:true
             
         } ,
-    },
-    {
-        timestamps:true
     }
 )
 
-const medicine = mongoose.model("medicine",medicineSchema);
+const medicine = mongoose.model("medicine",medicineSchema)
 
 module.exports = medicine
 
