@@ -1,5 +1,5 @@
 const mongoose =require("mongoose")
-const bcrypt=require("bcrypt");
+const bcrypt=require("bcrypt")
 
 const patientSchema = new mongoose.Schema(
     {
@@ -14,9 +14,7 @@ const patientSchema = new mongoose.Schema(
             }
         },
         password:{type:String,required:true},
-        uniqueId:{type:Number,required:true,unique:true},
-        prescriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'prescription' }]
-
+        uniqueId:{type:Number,required:true,unique:true}
     },
     {
         timestamps:true
@@ -36,9 +34,9 @@ patientSchema.pre("save",async function (next){
 
 // comparing the passwords
 patientSchema.methods.comparePassword = async function (candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+    return await bcrypt.compare(candidatePassword, this.password)
 };
 
-const patient = mongoose.model("patient",patientSchema);
+const patient = mongoose.model("patient",patientSchema)
 
 module.exports = patient
