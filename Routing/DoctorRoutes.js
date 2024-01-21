@@ -17,7 +17,7 @@ router.post("/signup",async(req,res) => {
     const {registrationNumber,specialization,name,password} =req.body
 
     if(!registrationNumber ||!specialization|| !name ||  !password){
-        return res.status(400).json({error:"name, phone number and password are required."})
+        return res.status(400).json({error:"name, specialization and password are required."})
     }
     try {
         //check registration number exists 
