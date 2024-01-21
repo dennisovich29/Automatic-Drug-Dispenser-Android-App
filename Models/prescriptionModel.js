@@ -12,7 +12,7 @@ const prescriptionSchema = new mongoose.Schema({
         price:{type:Number}
       }],
     sent_to :({name:{type:String},uniqueId:{type:Number}}),
-    sent_by :({name:{type:String},registrationNumber:{type:Number}}),
+    sent_by :({name:{type:String},registrationNumber:{type:Number},specialization:{type:String}}),
     date:{type:Date,default:Date.now},
     sent: { type: Boolean, default: false },
 })
