@@ -1,6 +1,6 @@
 const express=require("express")
 const mongoose=require("mongoose")
-const port = 8000
+const port = 7000
 const app=express()
 const uri = "mongodb+srv://dennisovich:$dennis_paul$@psaddcluster.0xqhuac.mongodb.net/ADD_Database?retryWrites=true&w=majority"
 app.use(express.json())
