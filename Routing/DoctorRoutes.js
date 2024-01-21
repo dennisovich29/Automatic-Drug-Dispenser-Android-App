@@ -75,7 +75,7 @@ router.get("/searchPatient/:uniqueId", async(req,res) => {
             return res.status(404).json({error:"object not found",details:error.message})
         }
 
-        res.status(200).json({ name: patientInfo.name, registrationNumber: patientInfo.registrationNumber ,uniqueId: patientInfo.uniqueId})
+        res.status(200).json({ name: patientInfo.name, phoneNumber: patientInfo.phone_no ,uniqueId: patientInfo.uniqueId})
 
     } catch (error) {
         res.status(500).json({error:"Internal Server Error",details:error.message})
