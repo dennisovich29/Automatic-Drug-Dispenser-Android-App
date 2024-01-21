@@ -45,7 +45,7 @@ router.post("/login",async(req,res) => {
     try {
         const foundDoctor = await doctor.findOne({registrationNumber})
         if (!foundDoctor){
-            return res.status(400).json({error:"Invalid uniqueId or password !!!.."})
+            return res.status(400).json({error:"Invalid uniqueId or password !!!"})
         }
         //compare typed password with existing password
         const isPasswordValid=await foundDoctor.comparePassword(password)
