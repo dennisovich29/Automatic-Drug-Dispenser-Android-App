@@ -34,7 +34,7 @@ router.post("/signup",async(req,res) => {
         const newPatinet=new patient({name,phone_no,password,uniqueId:generatedUniqueId})
         await newPatinet.save()
         res.status(200).json({UniqueId : generatedUniqueId})
-        
+
     } catch (error) {
         res.status(500).json({error:"Internal Server Error",details:error.message})
     }
@@ -108,7 +108,7 @@ router.get('/profile', authenticateTokenPatient, async (req, res) => {
 
 // displaying only the uniqueId in the home section 
 
-router.get('/home', authenticateTokenPatient, async (req, res) => {
+router.get('/home/patientUniqueId', authenticateTokenPatient, async (req, res) => {
     const userId = req.patient.userId
     try {
         // Find the patient by userId
@@ -125,6 +125,30 @@ router.get('/home', authenticateTokenPatient, async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error', details: error.message })
     }
 })
+
+// get latest prescription details 
+
+router.get("/home/activeprescription",authenticateTokenPatient, async(req,res) => {
+    const userId=req.patient.userId
+    try {
+        const latestPrescription = await prescription
+        .findOne({ "sent_to.uniqueId": userId })
+        .sort({ Timestamp: -1 })
+        .populate("sent_by", "name")
+
+        if (latestPrescription) {
+            // Extract the doctor's name and the number of medicines in the prescription
+            const { sent_by, Medicines } = latestPrescription
+            const doctorName = sent_by.name
+            const numberOfMedicines = Medicines.length
+            res.status(200).json({doctorName,numberOfMedicines})
+        }else{
+        res.status(404).json({message:"No prescription prescribed yet."})}    
+    }catch(error){
+        res.status(500).json({error:"Internal Server Error",details:error.message})
+    }
+})
+
 
 // medicine search suggestion 
 router.get('/selfPrescription/search', async (req, res) => {
