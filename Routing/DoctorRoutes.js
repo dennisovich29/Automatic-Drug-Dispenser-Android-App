@@ -17,7 +17,7 @@ router.post("/signup",async(req,res) => {
     const {registrationNumber,specialization,name,password} =req.body
 
     if(!registrationNumber ||!specialization|| !name ||  !password){
-        return res.status(400).json({error:"name, specialization and password are required."})
+        return res.status(400).json({error:"name, phone number and password are required."})
     }
     try {
         //check registration number exists 
@@ -44,7 +44,7 @@ router.post("/login",async(req,res) => {
     try {
         const foundDoctor = await doctor.findOne({registrationNumber})
         if (!foundDoctor){
-            return res.status(400).json({error:"Invalid uniqueId or password !!!.."})
+            return res.status(400).json({error:"Invalid registration number or password !!!.."})
         }
         //compare typed password with existing password
         const isPasswordValid=await foundDoctor.comparePassword(password)
