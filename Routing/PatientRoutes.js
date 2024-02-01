@@ -278,6 +278,29 @@ router.get('/medicines',async(req, res) => {
     res.json({ allMed })
 })
 
+// get prescription details of all presc
+// router.get("/home",authenticateTokenPatient, async(req,res) => {
+//     const userId=req.patient.userId
+//     try {
+//         const foundPatient = await patient.findById(userId)
+//         const {uniqueId}=foundPatient
+//         const latestPrescription = await prescription
+//         .findOne({"sent_to.uniqueId":uniqueId})
+//         .sort({ Timestamp: -1 })
+//         .populate("sent_by", "name")
+
+//         if (latestPrescription) {
+//             // Extract the doctor's name and the number of medicines in the prescription
+//             const { sent_by, Medicines } = latestPrescription
+//             const doctorName = sent_by.name
+//             const numberOfMedicines = Medicines.length
+//             res.status(200).json({doctorName,numberOfMedicines,Medicines})
+//         }else{
+//         res.status(404).json({message:"No prescription prescribed yet."})}    
+//     }catch(error){
+//         res.status(500).json({error:"Internal Server Error",details:error.message})
+//     }
+// })
 
 // 
 module.exports = router 

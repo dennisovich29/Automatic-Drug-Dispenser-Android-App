@@ -5,7 +5,6 @@ const prescriptionSchema = new mongoose.Schema({
   prescriptionId:mongoose.Schema.Types.ObjectId,
   sent_to :({name:{type:String},uniqueId:{type:Number}}),
   sent_by :({name:{type:String},registrationNumber:{type:Number}}),
-  date:{type:Date,default:Date.now},
     
   Medicines: [{
       Medicine_name:{type:String},
@@ -13,8 +12,13 @@ const prescriptionSchema = new mongoose.Schema({
       quantity: {type:Number},
       price:{type:Number}
   }],
+<<<<<<< HEAD
 
   sent: { type: Boolean, default: false },
+=======
+  Timestamp: { type: Date,default:new Date()},
+  scanned: { type: Boolean, default: false },
+>>>>>>> Initial commit
 })
 
 const prescription = mongoose.model("prescription",prescriptionSchema)

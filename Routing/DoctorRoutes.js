@@ -198,4 +198,8 @@ router.get('/home', authenticateTokenDoc, async (req, res) => {
 })
 
 
+<<<<<<< HEAD
 module.exports = router 
+=======
+module.exports = router 
+>>>>>>> Initial commit

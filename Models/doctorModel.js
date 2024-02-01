@@ -7,7 +7,6 @@ const doctorSchema = new mongoose.Schema(
         registrationNumber:{type:Number,required:true,unique:true},
         name:{type :String,required:true},
         specialization:{type:String,required:true},
-        prescriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'prescription' }],
         password:{type:String,required:true},
         
     },
@@ -35,4 +34,8 @@ doctorSchema.methods.comparePassword = async function (candidatePassword) {
 
 const doctor = mongoose.model("doctor",doctorSchema)
 
+<<<<<<< HEAD
 module.exports = doctor
+=======
+module.exports = doctor
+>>>>>>> Initial commit

@@ -14,7 +14,7 @@ const patientSchema = new mongoose.Schema(
             }
         },
         password:{type:String,required:true},
-        uniqueId:{type:Number,required:true,unique:true}
+        uniqueId:{type:Number,required:true,unique:true},
     },
     {
         timestamps:true
@@ -39,4 +39,8 @@ patientSchema.methods.comparePassword = async function (candidatePassword) {
 
 const patient = mongoose.model("patient",patientSchema)
 
+<<<<<<< HEAD
 module.exports = patient
+=======
+module.exports = patient
+>>>>>>> Initial commit
