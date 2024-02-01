@@ -140,7 +140,7 @@ router.post('/addMedicines/:uniqueId',authenticateTokenDoc, async (req, res) => 
                 })
             }
             else {
-              return res.status(404).json({message:"Given medicine not found"})
+              return res.status(404).json({message:"Given medicine not found."})
             }
         }
     
