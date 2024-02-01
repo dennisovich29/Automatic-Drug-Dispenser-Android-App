@@ -2,12 +2,12 @@
 
 const express=require("express")
 const jwt = require("jsonwebtoken")
-
+const qrcode = require("qrcode")
 const router = express.Router()
 const medicine =require("../Models/medecinModel")
 const patient = require("../Models/patientModel")
 const prescription = require("../Models/DocprescriptionModel")
-const qrcode = require("qrcode")
+const selfprescription = require("../Models/SelfprescriptionModel")
 const {authenticateTokenPatient} = require("../Middleware/authenticateToken")
 
 // generating a 6 digit number using math 
@@ -174,21 +174,16 @@ router.get('/selfPrescription/search', async (req, res) => {
 // self prescription
 
 router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
-    const userId = req.doctor.userId
+    const userId = req.patient.userId
     const { medicines: medicineDetails } = req.body
   
     try {
-        const currentDoc = await doctor.findById(userId)
-        const patientFound = await patient.findOne({uniqueId})
-        if (!patientFound) {
-            return res.status(404).json({ error: 'Patient not found' })
-        }
-        
+        const currentPatient = await patient.findById(userId)
+        const {uniqueId}= currentPatient
         const newPrescription = {
-            sent_to:{name: patientFound.name,uniqueId:patientFound.uniqueId},
-            sent_by:{name:currentDoc.name,registrationNumber:currentDoc.registrationNumber},
+            prescribed_by:uniqueId,
             Medicines: [],
-            sent: true,
+            scanned: false,
         }
     
         for (const medicineDetail of medicineDetails) {
@@ -209,7 +204,7 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
             }
         }
     
-        const prescriptionInstance = new prescription(newPrescription)
+        const prescriptionInstance = new selfprescription(newPrescription)
         const savedPrescription = await prescriptionInstance.save()
     
         res.status(200).json({ message: 'Medicines added to prescription successfully', prescription: savedPrescription })
@@ -220,9 +215,37 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
 })
 
 
-// generate qr 
+// generate qr for selfprescription 
 
 router.get('/generateQR/:prescriptionId', async (req, res) => {
+    const { prescriptionId } = req.params
+
+    try {
+        const savedPrescription = await selfprescription.findById(prescriptionId)
+        if (!savedPrescription) {
+            return res.status(404).json({ error: 'Prescription not found' })
+        }
+
+        // Extracting relevant data for the QR code
+        const qrData = savedPrescription.Medicines.map(medicine => ({
+            name: medicine.Medicine_name,
+            mg: medicine.mg,
+            quantity: medicine.quantity,
+        }))
+
+        // Generate QR code image
+        const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
+
+        res.status(200).json({ message: 'QR code generated successfully', qrImage })
+        // res.status(200).json({qrData})
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error', details: error.message })
+    }
+})
+
+// qr for doc prescription 
+
+router.get('/QR/:prescriptionId', async (req, res) => {
     const { prescriptionId } = req.params
 
     try {
@@ -239,10 +262,10 @@ router.get('/generateQR/:prescriptionId', async (req, res) => {
         }))
 
         // Generate QR code image
-        // const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
+        const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
 
-        // res.status(200).json({ message: 'QR code generated successfully', qrImage })
-        res.status(200).json({qrData})
+        res.status(200).json({ message: 'QR code generated successfully', qrImage })
+        // res.status(200).json({qrData})
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error', details: error.message })
     }
@@ -255,4 +278,6 @@ router.get('/medicines',async(req, res) => {
     res.json({ allMed })
 })
 
+
+// 
 module.exports = router 
