@@ -135,7 +135,7 @@ router.get("/home",authenticateTokenPatient, async(req,res) => {
         const {uniqueId}=foundPatient
         const latestPrescription = await prescription
         .findOne({"sent_to.uniqueId":uniqueId})
-        .sort({ Timestamp: -1 })
+        .sort({ date: -1 })
         .populate("sent_by", "name")
 
         if (latestPrescription) {

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 
-const prescriptionSchema = new mongoose.Schema({
+const selfprescriptionSchema = new mongoose.Schema({
 
   date:{type:Date,default:Date.now},
     
@@ -15,6 +15,6 @@ const prescriptionSchema = new mongoose.Schema({
   sent: { type: Boolean, default: false },
 })
 
-const prescription = mongoose.model("prescription",prescriptionSchema)
+const selfprescription = mongoose.model("selfprescription",selfprescriptionSchema)
 
-module.exports = prescription
+module.exports = selfprescription
