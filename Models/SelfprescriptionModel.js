@@ -13,11 +13,7 @@ const selfprescriptionSchema = new mongoose.Schema({
       price:{type:Number}
   }],
 
-<<<<<<< HEAD
-  sent: { type: Boolean, default: false },
-=======
   scanned: { type: Boolean, default: false },
->>>>>>> Initial commit
 })
 
 const selfprescription = mongoose.model("selfprescription",selfprescriptionSchema)

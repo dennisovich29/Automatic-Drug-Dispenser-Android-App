@@ -12,13 +12,8 @@ const prescriptionSchema = new mongoose.Schema({
       quantity: {type:Number},
       price:{type:Number}
   }],
-<<<<<<< HEAD
-
-  sent: { type: Boolean, default: false },
-=======
   Timestamp: { type: Date,default:new Date()},
   scanned: { type: Boolean, default: false },
->>>>>>> Initial commit
 })
 
 const prescription = mongoose.model("prescription",prescriptionSchema)
