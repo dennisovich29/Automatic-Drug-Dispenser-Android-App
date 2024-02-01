@@ -217,7 +217,7 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
 
 // generate qr for selfprescription 
 
-router.get('/generateQR/:prescriptionId', async (req, res) => {
+router.get('/viewSelfPrescription/:prescriptionId', async (req, res) => {
     const { prescriptionId } = req.params
 
     try {
@@ -236,7 +236,7 @@ router.get('/generateQR/:prescriptionId', async (req, res) => {
         // Generate QR code image
         const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
 
-        res.status(200).json({ message: 'QR code generated successfully', qrImage })
+        res.status(200).json({ message: 'Generated successfully', qrImage,qrData})
         // res.status(200).json({qrData})
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error', details: error.message })
@@ -245,7 +245,7 @@ router.get('/generateQR/:prescriptionId', async (req, res) => {
 
 // qr for doc prescription 
 
-router.get('/QR/:prescriptionId', async (req, res) => {
+router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
     const { prescriptionId } = req.params
 
     try {
@@ -264,7 +264,7 @@ router.get('/QR/:prescriptionId', async (req, res) => {
         // Generate QR code image
         const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
 
-        res.status(200).json({ message: 'QR code generated successfully', qrImage })
+        res.status(200).json({ message: 'Generated successfully', qrImage ,qrData})
         // res.status(200).json({qrData})
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error', details: error.message })
