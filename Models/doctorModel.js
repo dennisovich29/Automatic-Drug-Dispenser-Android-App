@@ -34,8 +34,4 @@ doctorSchema.methods.comparePassword = async function (candidatePassword) {
 
 const doctor = mongoose.model("doctor",doctorSchema)
 
-<<<<<<< HEAD
 module.exports = doctor
-=======
-module.exports = doctor
->>>>>>> Initial commit
