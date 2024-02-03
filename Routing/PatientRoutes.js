@@ -263,6 +263,7 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
 
         // Generate QR code image
         const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
+        
 
         res.status(200).json({ message: 'Generated successfully', qrImage ,qrData})
         // res.status(200).json({qrData})
@@ -271,6 +272,35 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
     }
 })
 
+
+// router.get('/viewDocPrescriptionQr/:prescriptionId', async (req, res) => {
+//     const { prescriptionId } = req.params
+
+//     try {
+//         const savedPrescription = await prescription.findById(prescriptionId)
+//         if (!savedPrescription) {
+//             return res.status(404).json({ error: 'Prescription not found' })
+//         }
+
+//         // Extracting relevant data for the QR code
+//         const prescriptionData = savedPrescription.Medicines.map(medicine => ({
+//             name: medicine.Medicine_name,
+//             mg: medicine.mg,
+//             quantity: medicine.quantity,
+//         }))
+
+//         // Generate QR code image
+//         const qrData = (JSON.stringify(prescriptionData))
+//         const filePath = "/Users/paulaassaan/Desktop/Backend/ALL_QR_PNG/qr_code.png"
+
+//         await qrcode.toFile(filePath, qrData)
+        
+//         res.sendFile(filePath)
+
+//     } catch (error) {
+//         res.status(500).json({ error: 'Internal Server Error', details: error.message })
+//     }
+// })
 
 // to get all medicines 
 router.get('/medicines',async(req, res) => {
