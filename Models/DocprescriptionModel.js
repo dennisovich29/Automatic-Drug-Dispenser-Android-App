@@ -12,7 +12,7 @@ const prescriptionSchema = new mongoose.Schema({
       quantity: {type:Number},
       price:{type:Number}
   }],
-  Timestamp: { type: Date,default:new Date()},
+  date: { type: Date,default:new Date()},
   scanned: { type: Boolean, default: false },
 })
 
