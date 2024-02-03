@@ -255,17 +255,17 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
         }
 
         // Extracting relevant data for the QR code
-        const qrData = savedPrescription.Medicines.map(medicine => ({
+        const prescriptionData = savedPrescription.Medicines.map(medicine => ({
             name: medicine.Medicine_name,
             mg: medicine.mg,
             quantity: medicine.quantity,
         }))
 
         // Generate QR code image
-        const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
+        const qrData = await qrcode.toDataURL(JSON.stringify(prescriptionData))
         
 
-        res.status(200).json({ message: 'Generated successfully', qrImage ,qrData})
+        res.status(200).json({ message: 'Generated successfully', qrData})
         // res.status(200).json({qrData})
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error', details: error.message })
