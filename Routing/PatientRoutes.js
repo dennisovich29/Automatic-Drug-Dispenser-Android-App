@@ -229,7 +229,6 @@ router.get('/viewSelfPrescription/:prescriptionId', async (req, res) => {
         // Extracting relevant data for the QR code
         const qrData = savedPrescription.Medicines.map(medicine => ({
             name: medicine.Medicine_name,
-            mg: medicine.mg,
             quantity: medicine.quantity,
         }))
 
@@ -257,7 +256,6 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
         // Extracting relevant data for the QR code
         const prescriptionData = savedPrescription.Medicines.map(medicine => ({
             name: medicine.Medicine_name,
-            mg: medicine.mg,
             quantity: medicine.quantity,
         }))
 
