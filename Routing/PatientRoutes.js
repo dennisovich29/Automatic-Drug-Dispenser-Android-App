@@ -262,8 +262,9 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
         }))
 
         // Generate QR code image
-        const qrData = JSON.stringify(prescriptionData) //qrcode.toDataURL(JSON.stringify(prescriptionData))
+        const qrData = await qrcode.toDataURL(JSON.stringify(prescriptionData)) // json to Base64
         
+        // const qrData = JSON.stringify(prescriptionData)  // json to string 
 
         res.status(200).json({ message: 'Generated successfully', qrData})
         // res.status(200).json({qrData})
