@@ -54,7 +54,7 @@ router.post("/login",async(req,res) => {
         const isPasswordValid=await foundPatient.comparePassword(password)
         if (isPasswordValid){
             //generate jwt token 
-            const token =jwt.sign({userId:foundPatient._id},"jwt.Secret",{expiresIn:'1hr'})
+            const token =jwt.sign({userId:foundPatient._id},"jwt.Secret",{expiresIn:'5hr'})
 
             res.status(200).json({token})
         }
