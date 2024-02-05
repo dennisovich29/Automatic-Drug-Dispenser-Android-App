@@ -140,10 +140,36 @@ router.get("/home",authenticateTokenPatient, async(req,res) => {
 
         if (latestPrescription) {
             // Extract the doctor's name and the number of medicines in the prescription
-            const { sent_by, Medicines, price } = latestPrescription
+            const { sent_by, Medicines, price ,prescriptionId} = latestPrescription
             const doctorName = sent_by.name
             const numberOfMedicines = Medicines.length
-            res.status(200).json({doctorName,numberOfMedicines,Medicines,price})
+            res.status(200).json({doctorName,numberOfMedicines,Medicines,price,prescriptionId})
+        }else{
+        res.status(404).json({message:"No prescription prescribed yet."})}    
+    }catch(error){
+        res.status(500).json({error:"Internal Server Error",details:error.message})
+    }
+})
+
+
+// get all prescriptions 
+
+router.get("/previousPrescription",authenticateTokenPatient, async(req,res) => {
+    const userId=req.patient.userId
+    try {
+        const foundPatient = await patient.findById(userId)
+        const {uniqueId}=foundPatient
+        const latestPrescription = await prescription
+        .findAll({"sent_to.uniqueId":uniqueId})
+        .sort({ date: -1 })
+        .populate("sent_by", "name")
+
+        if (latestPrescription) {
+            // Extract the doctor's name and the number of medicines in the prescription
+            const { sent_by, Medicines, price ,prescriptionId} = latestPrescription
+            const doctorName = sent_by.name
+            const numberOfMedicines = Medicines.length
+            res.status(200).json({doctorName,numberOfMedicines,Medicines,price,prescriptionId})
         }else{
         res.status(404).json({message:"No prescription prescribed yet."})}    
     }catch(error){
