@@ -140,10 +140,10 @@ router.get("/home",authenticateTokenPatient, async(req,res) => {
 
         if (latestPrescription) {
             // Extract the doctor's name and the number of medicines in the prescription
-            const { sent_by, Medicines, price ,prescriptionId} = latestPrescription
+            const { sent_by, Medicines, price ,_id} = latestPrescription
             const doctorName = sent_by.name
             const numberOfMedicines = Medicines.length
-            res.status(200).json({doctorName,numberOfMedicines,Medicines,price,prescriptionId})
+            res.status(200).json({doctorName,numberOfMedicines,Medicines,price,_id})
         }else{
         res.status(404).json({message:"No prescription prescribed yet."})}    
     }catch(error){
@@ -159,19 +159,21 @@ router.get("/previousPrescription",authenticateTokenPatient, async(req,res) => {
     try {
         const foundPatient = await patient.findById(userId)
         const {uniqueId}=foundPatient
-        const latestPrescription = await prescription
-        .findAll({"sent_to.uniqueId":uniqueId})
-        .sort({ date: -1 })
-        .populate("sent_by", "name")
 
-        if (latestPrescription) {
-            // Extract the doctor's name and the number of medicines in the prescription
-            const { sent_by, Medicines, price ,prescriptionId} = latestPrescription
-            const doctorName = sent_by.name
-            const numberOfMedicines = Medicines.length
-            res.status(200).json({doctorName,numberOfMedicines,Medicines,price,prescriptionId})
-        }else{
-        res.status(404).json({message:"No prescription prescribed yet."})}    
+        const latestPrescriptions = await prescription.find({"sent_to.uniqueId":uniqueId}).sort({ date: -1 }).limit(10)
+        if(latestPrescriptions){
+                let listOfPrescriptions = []
+            for(const latestPrescription of latestPrescriptions){
+                const { sent_by, Medicines, price ,_id} = latestPrescription
+                const numberOfMedicines = Medicines.length
+                const details = {numberOfMedicines,Medicines,price,_id,sent_by}
+                listOfPrescriptions.push(details)
+            }
+            res.status(200).json(listOfPrescriptions)
+        }
+        else{
+            res.status(404).json({message:"No prescription prescribed yet."})
+        }  
     }catch(error){
         res.status(500).json({error:"Internal Server Error",details:error.message})
     }
