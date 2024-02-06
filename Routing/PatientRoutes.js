@@ -253,17 +253,22 @@ router.get('/viewSelfPrescription/:prescriptionId', async (req, res) => {
         if (!savedPrescription) {
             return res.status(404).json({ error: 'Prescription not found' })
         }
+        if(!savedPrescription.scanned){
+            // Extracting relevant data for the QR code
+            const qrData = savedPrescription.Medicines.map(medicine => ({
+                name: medicine.Medicine_name,
+                quantity: medicine.quantity,
+            }))
 
-        // Extracting relevant data for the QR code
-        const qrData = savedPrescription.Medicines.map(medicine => ({
-            name: medicine.Medicine_name,
-            quantity: medicine.quantity,
-        }))
+            // Generate QR code image
+            const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
 
-        // Generate QR code image
-        const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
-
-        res.status(200).json({ message: 'Generated successfully', qrImage,qrData})
+            res.status(200).json({ message: 'Generated successfully', qrImage,qrData})
+        }
+        else{
+            res.status(404).json({message:"QR Expired"})
+        }
+        
         // res.status(200).json({qrData})
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error', details: error.message })
