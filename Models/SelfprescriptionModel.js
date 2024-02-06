@@ -7,7 +7,7 @@ const selfprescriptionSchema = new mongoose.Schema({
 
   prescriptionId:mongoose.Schema.Types.ObjectId,
   prescribed_by:{type:Number},
-  date: { type: Date,default: moment().format('MMM D, YYYY h:mm A')},
+  date: { type: String,default: moment().format('MMM DD YYYY , h:mm A')},
   Medicines: [{
       Medicine:{type:String},
       mg:{type:Number},

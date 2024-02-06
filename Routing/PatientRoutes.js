@@ -140,10 +140,10 @@ router.get("/home",authenticateTokenPatient, async(req,res) => {
 
         if (latestPrescription) {
             // Extract the doctor's name and the number of medicines in the prescription
-            const { sent_by, Medicines, price ,_id} = latestPrescription
+            const { sent_by, Medicines, price ,_id,date} = latestPrescription
             const doctorName = sent_by.name
             const numberOfMedicines = Medicines.length
-            res.status(200).json({doctorName,numberOfMedicines,Medicines,price,_id})
+            res.status(200).json({doctorName,numberOfMedicines,Medicines,price,_id,date})
         }else{
         res.status(404).json({message:"No prescription prescribed yet."})}    
     }catch(error){
