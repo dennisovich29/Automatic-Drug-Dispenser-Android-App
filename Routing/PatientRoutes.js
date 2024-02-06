@@ -297,7 +297,7 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
             
             // const qrData = JSON.stringify(prescriptionData)  // json to string 
 
-            res.status(200).json({ message: 'Generated successfully', qrData})
+            res.status(200).json({ message: 'Generated successfully', qrData,prescriptionData})
         }
         else{
             res.status(404).json({message:"QR Expired"})
