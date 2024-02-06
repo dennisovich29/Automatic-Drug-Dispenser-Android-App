@@ -1,5 +1,7 @@
 const mongoose = require("mongoose")
+const moment = require("moment-timezone")
 
+moment.tz.setDefault('Asia/Kolkata')
 
 const prescriptionSchema = new mongoose.Schema({
   prescriptionId:mongoose.Schema.Types.ObjectId,
@@ -12,7 +14,7 @@ const prescriptionSchema = new mongoose.Schema({
       quantity: {type:Number},
       price:{type:Number}
   }],
-  date: { type: Date,default:new Date()},
+  date: { type: Date,default: moment().format('MMM D, YYYY h:mm A')},
   scanned: { type: Boolean, default: false },
 })
 
