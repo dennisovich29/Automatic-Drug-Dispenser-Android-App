@@ -213,6 +213,8 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
             Medicines: [],
             scanned: false,
         }
+
+        let addedPrescription = false
     
         for (const medicineDetail of medicineDetails) {
             const { name, mg, quantity } = medicineDetail
@@ -225,11 +227,15 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
                     quantity,
                     price:Medicine.price * quantity
                 })
+                addedPrescription = true
             }
             else {
               // If the medicine is not found, you might want to handle it (e.g., return an error)
               return res.status(404).json({message:"Given medicine not found"})
             }
+        }
+        if(!addedPrescription){
+            res.status(401).json({message:"No medicine added to prescribe"})
         }
     
         const prescriptionInstance = new selfprescription(newPrescription)
