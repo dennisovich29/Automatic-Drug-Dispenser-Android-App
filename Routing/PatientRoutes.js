@@ -308,64 +308,11 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
 })
 
 
-// router.get('/viewDocPrescriptionQr/:prescriptionId', async (req, res) => {
-//     const { prescriptionId } = req.params
-
-//     try {
-//         const savedPrescription = await prescription.findById(prescriptionId)
-//         if (!savedPrescription) {
-//             return res.status(404).json({ error: 'Prescription not found' })
-//         }
-
-//         // Extracting relevant data for the QR code
-//         const prescriptionData = savedPrescription.Medicines.map(medicine => ({
-//             name: medicine.Medicine_name,
-//             mg: medicine.mg,
-//             quantity: medicine.quantity,
-//         }))
-
-//         // Generate QR code image
-//         const qrData = (JSON.stringify(prescriptionData))
-//         const filePath = "/Users/paulaassaan/Desktop/Backend/ALL_QR_PNG/qr_code.png"
-
-//         await qrcode.toFile(filePath, qrData)
-        
-//         res.sendFile(filePath)
-
-//     } catch (error) {
-//         res.status(500).json({ error: 'Internal Server Error', details: error.message })
-//     }
-// })
-
 // to get all medicines 
 router.get('/medicines',async(req, res) => {
     const allMed= await medicine.find({})
     res.json({ allMed })
 })
 
-// get prescription details of all presc
-// router.get("/home",authenticateTokenPatient, async(req,res) => {
-//     const userId=req.patient.userId
-//     try {
-//         const foundPatient = await patient.findById(userId)
-//         const {uniqueId}=foundPatient
-//         const latestPrescription = await prescription
-//         .findOne({"sent_to.uniqueId":uniqueId})
-//         .sort({ Timestamp: -1 })
-//         .populate("sent_by", "name")
 
-//         if (latestPrescription) {
-//             // Extract the doctor's name and the number of medicines in the prescription
-//             const { sent_by, Medicines } = latestPrescription
-//             const doctorName = sent_by.name
-//             const numberOfMedicines = Medicines.length
-//             res.status(200).json({doctorName,numberOfMedicines,Medicines})
-//         }else{
-//         res.status(404).json({message:"No prescription prescribed yet."})}    
-//     }catch(error){
-//         res.status(500).json({error:"Internal Server Error",details:error.message})
-//     }
-// })
-
-// 
 module.exports = router 

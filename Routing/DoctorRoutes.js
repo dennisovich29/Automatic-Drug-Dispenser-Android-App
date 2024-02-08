@@ -112,45 +112,50 @@ router.post('/addMedicines/:uniqueId',authenticateTokenDoc, async (req, res) => 
     const userId = req.doctor.userId
     const { uniqueId } = req.params
     const { medicines: medicineDetails } = req.body
-  
-    try {
-        const currentDoc = await doctor.findById(userId)
-        const patientFound = await patient.findOne({uniqueId})
-        if (!patientFound) {
-            return res.status(404).json({ error: 'Patient not found' })
-        }
+    if(medicineDetails != null){
+        try {
+            const currentDoc = await doctor.findById(userId)
+            const patientFound = await patient.findOne({uniqueId})
+            if (!patientFound) {
+                return res.status(404).json({ error: 'Patient not found' })
+            }
+            
+            const newPrescription = {
+                sent_to:{name: patientFound.name,uniqueId:patientFound.uniqueId},
+                sent_by:{name:currentDoc.name,registrationNumber:currentDoc.registrationNumber},
+                Medicines: [],
+                sent: true,
+            }
         
-        const newPrescription = {
-            sent_to:{name: patientFound.name,uniqueId:patientFound.uniqueId},
-            sent_by:{name:currentDoc.name,registrationNumber:currentDoc.registrationNumber},
-            Medicines: [],
-            sent: true,
-        }
-    
-        for (const medicineDetail of medicineDetails) {
-            const { name, mg, quantity } = medicineDetail
-    
-            const Medicine = await medicine.findOne({ name, mg })
-            if (Medicine) {
-                newPrescription.Medicines.push({
-                    Medicine_name: Medicine.name,
-                    mg:Medicine.mg,
-                    quantity,
-                    price:Medicine.price * quantity
-                })
+            for (const medicineDetail of medicineDetails) {
+                const { name, mg, quantity } = medicineDetail
+        
+                const Medicine = await medicine.findOne({ name, mg })
+                if (Medicine) {
+                    newPrescription.Medicines.push({
+                        Medicine_name: Medicine.name,
+                        mg:Medicine.mg,
+                        quantity,
+                        price:Medicine.price * quantity
+                    })
+                }
+                else {
+                return res.status(404).json({message:"Given medicine not found"})
+                }
             }
-            else {
-              return res.status(404).json({message:"Given medicine not found"})
-            }
-        }
-    
-        const prescriptionInstance = new prescription(newPrescription)
-        const savedPrescription = await prescriptionInstance.save()
-    
-        res.status(200).json({ message: 'Medicines added to prescription successfully', prescription: savedPrescription })
-    } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' ,details:error.message})
+        
+            const prescriptionInstance = new prescription(newPrescription)
+            const savedPrescription = await prescriptionInstance.save()
+        
+            res.status(200).json({ message: 'Medicines added to prescription successfully', prescription: savedPrescription })
+        } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error' ,details:error.message})
+        }  
+    }else{
+        res.status(401).json({message: "No medicine added to prescribe"})
     }
+  
+    
 })
 
 
