@@ -160,13 +160,19 @@ router.get("/previousPrescription",authenticateTokenPatient, async(req,res) => {
         const foundPatient = await patient.findById(userId)
         const {uniqueId}=foundPatient
 
-        const latestPrescriptions = await prescription.find({"sent_to.uniqueId":uniqueId}).sort({ date: -1 }).limit(10)
-        if(latestPrescriptions){
-                let listOfPrescriptions = []
-            for(const latestPrescription of latestPrescriptions){
-                const { sent_by, Medicines, price ,_id} = latestPrescription
+        const Prescriptions = await prescription.find({"sent_to.uniqueId":uniqueId}).sort({ date: -1 }).limit(10)
+        const SelfPrescriptions = await selfprescription.find({"sent_to.uniqueId":uniqueId}).sort({ date: -1 }).limit(10)
+        console.log(Prescriptions,SelfPrescriptions)
+        let allPrescriptions = []
+        Array.prototype.push.apply(allPrescriptions, SelfPrescriptions);
+        Array.prototype.push.apply(allPrescriptions, Prescriptions);
+        console.log(allPrescriptions)
+        if(allPrescriptions != null ){
+            let listOfPrescriptions = []
+            for(const onePrescription of allPrescriptions){
+                const { sent_by, Medicines, price ,_id} = onePrescription
                 const numberOfMedicines = Medicines.length
-                const details = {numberOfMedicines,Medicines,price,_id,sent_by}
+                const details = {_id,sent_by,numberOfMedicines,Medicines,price}
                 listOfPrescriptions.push(details)
             }
             res.status(200).json(listOfPrescriptions)
