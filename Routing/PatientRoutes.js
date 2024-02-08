@@ -161,7 +161,7 @@ router.get("/previousPrescription",authenticateTokenPatient, async(req,res) => {
         const {uniqueId}=foundPatient
 
         const Prescriptions = await prescription.find({"sent_to.uniqueId":uniqueId}).sort({ date: -1 }).limit(10)
-        const SelfPrescriptions = await selfprescription.find({"sent_by.uniqueId":uniqueId}).sort({ date: -1 }).limit(10)
+        const SelfPrescriptions = await selfprescription.find({"prescribed_by":uniqueId}).sort({ date: -1 }).limit(10)
         console.log(Prescriptions,SelfPrescriptions)
         let allPrescriptions = []
         Array.prototype.push.apply(allPrescriptions, SelfPrescriptions);
