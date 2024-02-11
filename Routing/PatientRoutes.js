@@ -327,4 +327,23 @@ router.get('/medicines',async(req, res) => {
 })
 
 
+// updating the prescription for self prescription 
+
+app.put("/selfPrescription/:prescriptionId",async(req,res) => {
+    const {prescribeId} = req.params
+    try {
+        const existingPrescriptionId = await(selfprescription.findById(prescribeId))
+        if(!existingPrescriptionId){
+            return 
+            res.status(404).json({message:"Prescription not found"})
+
+        }
+        existingPrescriptionId.Medicines = req.body.Medicines
+        await existingPrescriptionId.save()
+        res.status(200).json({message:"Prescription updated"})
+        
+    } catch (error) {
+        res.status(500).json({ error: 'Internal Server Error', details: error.message })
+    }
+})
 module.exports = router 
