@@ -323,13 +323,22 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
 // to get all medicines 
 router.get('/medicines',async(req, res) => {
     const allMed= await medicine.find({})
-    res.json({ allMed })
+    let list_of_med = []
+
+    for( const med of allMed ){
+        let one_med={}
+        one_med={medName:med.name,medMg:med.mg,medPrice:med.price}
+        list_of_med.push(one_med)
+    }
+
+    res.status(200).json({list_of_med})
+    
 })
 
 
 // updating the prescription for self prescription 
 
-app.put("/selfPrescription/:prescriptionId",async(req,res) => {
+router.put("/selfPrescription/:prescriptionId",async(req,res) => {
     const {prescribeId} = req.params
     try {
         const existingPrescriptionId = await(selfprescription.findById(prescribeId))
