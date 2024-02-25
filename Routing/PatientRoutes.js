@@ -128,6 +128,33 @@ router.get('/home/patientUniqueId', authenticateTokenPatient, async (req, res) =
 
 // get latest prescription details 
 
+
+router.get("/home_",authenticateTokenPatient, async(req,res) => {
+    const userId=req.patient.userId
+    try {
+        const foundPatient = await patient.findById(userId)
+        const {uniqueId}=foundPatient
+
+        const latestSelfPrescription = await selfprescription
+        .findOne({"prescribed_by":uniqueId})
+        .sort({ date: -1 })
+        .populate("_id","Medicine")
+
+        if (latestSelfPrescription) {
+            // Extract the doctor's name and the number of medicines in the prescription
+
+            const { prescribed_by, Medicines, price ,_id,date} = latestSelfPrescription
+
+            const numberOfMedicines = Medicines.length
+
+            res.status(200).json({prescribed_by,numberOfMedicines,Medicines,price,_id,date})
+        }else{
+        res.status(404).json({message:"No prescription prescribed yet."})}    
+    }catch(error){
+        res.status(500).json({error:"Internal Server Error",details:error.message})
+    }
+})
+
 router.get("/home",authenticateTokenPatient, async(req,res) => {
     const userId=req.patient.userId
     try {
@@ -138,11 +165,14 @@ router.get("/home",authenticateTokenPatient, async(req,res) => {
         .sort({ date: -1 })
         .populate("sent_by", "name")
 
-        if (latestPrescription) {
+
+        if (latestPrescription ) {
             // Extract the doctor's name and the number of medicines in the prescription
             const { sent_by, Medicines, price ,_id,date} = latestPrescription
+
             const doctorName = sent_by.name
             const numberOfMedicines = Medicines.length
+
             res.status(200).json({doctorName,numberOfMedicines,Medicines,price,_id,date})
         }else{
         res.status(404).json({message:"No prescription prescribed yet."})}    
