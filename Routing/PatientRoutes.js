@@ -126,7 +126,7 @@ router.get('/home/patientUniqueId', authenticateTokenPatient, async (req, res) =
     }
 })
 
-// get latest prescription details 
+// get latest selfprescription details 
 
 
 router.get("/home_",authenticateTokenPatient, async(req,res) => {
@@ -138,7 +138,7 @@ router.get("/home_",authenticateTokenPatient, async(req,res) => {
         const latestSelfPrescription = await selfprescription
         .findOne({"prescribed_by":uniqueId})
         .sort({ date: -1 })
-        .populate("_id","Medicine")
+        .populate("_id")
 
         if (latestSelfPrescription) {
             // Extract the doctor's name and the number of medicines in the prescription
@@ -258,7 +258,7 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
             const Medicine = await medicine.findOne({ name, mg })
             if (Medicine) {
                 newPrescription.Medicines.push({
-                    Medicine: Medicine.name,
+                    Medicine_name: Medicine.name,
                     mg:Medicine.mg,
                     quantity,
                     price:Medicine.price * quantity
