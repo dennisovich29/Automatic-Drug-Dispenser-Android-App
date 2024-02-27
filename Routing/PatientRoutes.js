@@ -253,7 +253,7 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
         let addedPrescription = false
     
         for (const medicineDetail of medicineDetails) {
-            const { name, mg, quantity } = medicineDetail
+            const { name, mg, quantity,days,time } = medicineDetail
     
             const Medicine = await medicine.findOne({ name, mg })
             if (Medicine) {
@@ -261,6 +261,8 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
                     Medicine_name: Medicine.name,
                     mg:Medicine.mg,
                     quantity,
+                    days:days,
+                    time:time,
                     price:Medicine.price * quantity
                 })
                 addedPrescription = true

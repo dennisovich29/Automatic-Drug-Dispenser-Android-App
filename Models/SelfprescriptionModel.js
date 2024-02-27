@@ -12,6 +12,8 @@ const selfprescriptionSchema = new mongoose.Schema({
       Medicine_name:{type:String},
       mg:{type:Number},
       quantity: {type:Number},
+      days:{type:String},
+      time:{type:String},
       price:{type:Number}
   }],
 
