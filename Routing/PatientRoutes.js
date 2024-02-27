@@ -299,15 +299,15 @@ router.get('/viewSelfPrescription/:prescriptionId', async (req, res) => {
         }
         if(!savedPrescription.scanned){
             // Extracting relevant data for the QR code
-            const qrData = savedPrescription.Medicines.map(medicine => ({
+            const prescriptionData = savedPrescription.Medicines.map(medicine => ({
                 name: medicine.Medicine_name,
                 quantity: medicine.quantity,
             }))
 
             // Generate QR code image
-            const qrImage = await qrcode.toDataURL(JSON.stringify(qrData))
+            const qrData = await qrcode.toDataURL(JSON.stringify(prescriptionData))
 
-            res.status(200).json({ message: 'Generated successfully', qrImage,qrData})
+            res.status(200).json({ message: 'Generated successfully', prescriptionData,qrData})
         }
         else{
             res.status(404).json({message:"QR Expired"})
