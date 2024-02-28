@@ -352,9 +352,9 @@ router.get('/viewDocPrescription/:prescriptionId', async (req, res) => {
 })
 
 
-// to get all medicines 
+// to get all self prescriable medicines 
 router.get('/medicines',async(req, res) => {
-    const allMed= await medicine.find({})
+    const allMed= await medicine.find({needPrescription:false})
     let listOfMed = []
 
     for( const med of allMed ){

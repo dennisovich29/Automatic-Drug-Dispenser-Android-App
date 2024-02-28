@@ -16,7 +16,7 @@ const selfprescriptionSchema = new mongoose.Schema({
       time:{type:String},
       price:{type:Number}
   }],
-  type:{type:String,default:self},
+  type:{type:String,default:"self"},
   scanned: { type: Boolean, default: false },
 })
 
