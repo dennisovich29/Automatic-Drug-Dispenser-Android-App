@@ -18,6 +18,7 @@ const prescriptionSchema = new mongoose.Schema({
   }],
   date: { type: String,default:() => moment().format('MMM DD YYYY , h:mm:ss A')},
   scanned: { type: Boolean, default: false },
+  type:{type:String,default:doc}
 })
 
 const prescription = mongoose.model("prescription",prescriptionSchema)
