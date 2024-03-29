@@ -219,9 +219,8 @@ router.get("/home_",authenticateTokenDoc, async(req,res) => {
 
 
         if (latestPrescription ) {
-            // Extract the doctor's name and the number of medicines in the prescription
-            const { sent_to, Medicines,_id,date} = latestPrescription
-
+           
+            const { sent_to, Medicines,date} = latestPrescription
             const patientName = sent_to.name
             const patientId =sent_to.uniqueId
             const numberOfMedicines = Medicines.length
