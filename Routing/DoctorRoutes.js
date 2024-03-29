@@ -214,7 +214,7 @@ router.get("/home_",authenticateTokenDoc, async(req,res) => {
         const {registrationNumber}=foundDoctor
         const latestPrescription = await prescription
         .findOne({"sent_by.registrationNumber":registrationNumber})
-        .sort({ date: -1 })
+        .sort({ date2sort: -1 })
         .populate("sent_to", "name")
 
 

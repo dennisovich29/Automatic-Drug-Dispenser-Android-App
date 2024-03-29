@@ -16,6 +16,7 @@ const prescriptionSchema = new mongoose.Schema({
       time:{type:String},
       price:{type:Number}
   }],
+  date2sort:{type :Date,default : Date.now()},
   date: { type: String,default:() => moment().format('MMM DD YYYY , h:mm:ss A')},
   scanned: { type: Boolean, default: false },
   type:{type:String,default:"doc"}

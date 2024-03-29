@@ -137,7 +137,7 @@ router.get("/home_",authenticateTokenPatient, async(req,res) => {
 
         const latestSelfPrescription = await selfprescription
         .findOne({"prescribed_by":uniqueId})
-        .sort({ date: -1 })
+        .sort({ date2sort: -1 })
         .populate("_id")
 
         if (latestSelfPrescription) {
@@ -162,7 +162,7 @@ router.get("/home",authenticateTokenPatient, async(req,res) => {
         const {uniqueId}=foundPatient
         const latestPrescription = await prescription
         .findOne({"sent_to.uniqueId":uniqueId})
-        .sort({ date: -1 })
+        .sort({ date2sort: -1 })
         .populate("sent_by", "name")
 
 
@@ -190,8 +190,8 @@ router.get("/previousPrescription",authenticateTokenPatient, async(req,res) => {
         const foundPatient = await patient.findById(userId)
         const {uniqueId}=foundPatient
 
-        const Prescriptions = await prescription.find({"sent_to.uniqueId":uniqueId}).sort({ date: -1 }).limit(10)
-        const SelfPrescriptions = await selfprescription.find({"prescribed_by":uniqueId}).sort({ date: -1 }).limit(10)
+        const Prescriptions = await prescription.find({"sent_to.uniqueId":uniqueId}).sort({ date2sort: -1 }).limit(10)
+        const SelfPrescriptions = await selfprescription.find({"prescribed_by":uniqueId}).sort({ date2sort: -1 }).limit(10)
         // console.log(Prescriptions,SelfPrescriptions)
         let allPrescriptions = []
         Array.prototype.push.apply(allPrescriptions, SelfPrescriptions);
@@ -268,7 +268,7 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
                 addedPrescription = true
             }
             else {
-              // If the medicine is not found, you might want to handle it (e.g., return an error)
+
               return res.status(404).json({message:"Given medicine not found"})
             }
         }
@@ -281,7 +281,7 @@ router.post('/selfPrescription',authenticateTokenPatient, async (req, res) => {
     
         res.status(200).json({ message: 'Medicines added to prescription successfully', prescription: savedPrescription })
     } catch (error) {
-    //   console.error(error)
+
       res.status(500).json({ error: 'Internal Server Error' ,details:error.message})
     }
 })
@@ -387,4 +387,6 @@ router.put("/selfPrescription/:prescriptionId",async(req,res) => {
         res.status(500).json({ error: 'Internal Server Error', details: error.message })
     }
 })
+
+
 module.exports = router 
