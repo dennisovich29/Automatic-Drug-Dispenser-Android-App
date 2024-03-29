@@ -205,5 +205,35 @@ router.get('/home', authenticateTokenDoc, async (req, res) => {
     }
 })
 
+// giving details of prescription at home page
+
+router.get("/home_",authenticateTokenDoc, async(req,res) => {
+    const userId=req.doctor.userId
+    try {
+        const foundDoctor = await doctor.findById(userId)
+        const {uniqueId}=foundDoctor
+        const latestPrescription = await prescription
+        .findOne({"sent_by.registrationNumber":uniqueId})
+        .sort({ date: -1 })
+        .populate("sent_to", "name")
+
+
+        if (latestPrescription ) {
+            // Extract the doctor's name and the number of medicines in the prescription
+            const { sent_to, Medicines,_id,date} = latestPrescription
+
+            const patientName = sent_to.name
+            const patientId =sent_to.uniqueId
+            const numberOfMedicines = Medicines.length
+
+            res.status(200).json({patientName,patientId,numberOfMedicines,date})
+        }else{
+        res.status(404).json({message:"No prescription prescribed yet."})}    
+    }catch(error){
+        res.status(500).json({error:"Internal Server Error",details:error.message})
+    }
+})
+
+
 
 module.exports = router 

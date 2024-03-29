@@ -363,7 +363,6 @@ router.get('/medicines',async(req, res) => {
         listOfMed.push(one_med)
     }
 
-    
     res.status(200).json({listOfMed})
     
 })
