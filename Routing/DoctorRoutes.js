@@ -122,7 +122,7 @@ router.post('/addMedicines/:uniqueId',authenticateTokenDoc, async (req, res) => 
         
         const newPrescription = {
             sent_to:{name: patientFound.name,uniqueId:patientFound.uniqueId},
-            sent_by:{name:currentDoc.name,registrationNumber:currentDoc.registrationNumber},
+            sent_by:{name:currentDoc.name,registrationNumber:currentDoc.registrationNumber,specialization:currentDoc.specialization},
             Medicines: [],
             sent: true,
         }

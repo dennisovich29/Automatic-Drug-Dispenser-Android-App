@@ -203,9 +203,10 @@ router.get("/previousPrescription",authenticateTokenPatient, async(req,res) => {
                 const { sent_by, Medicines,type, price ,_id,date} = onePrescription
                 const docname=sent_by.name
                 const docspecialization=sent_by.specialization
+                const docregno=sent_by.registrationNumber
                 const numberOfMedicines = Medicines.length
                 // const details = {_id,type,sent_by,numberOfMedicines,Medicines,date,price}
-                const details = {docname,docspecialization,date}
+                const details = {docname,docspecialization,docregno,date}
                 listOfPrescriptions.push(details)
             }
             res.status(200).json({prescriptions_list:listOfPrescriptions})
