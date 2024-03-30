@@ -10,7 +10,7 @@ const patientSchema = new mongoose.Schema(
                 // Validate that the phone number is a 10-digit number
                     return /^[0-9]{10}$/.test(value);
                 },
-                message: 'Invalid phone number format'
+                message: 'Invalid phone number format '
             }
         },
         password:{type:String,required:true},
