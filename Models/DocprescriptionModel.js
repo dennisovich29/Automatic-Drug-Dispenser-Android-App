@@ -6,7 +6,7 @@ moment.tz.setDefault('Asia/Kolkata')
 const prescriptionSchema = new mongoose.Schema({
   prescriptionId:mongoose.Schema.Types.ObjectId,
   sent_to :({name:{type:String},uniqueId:{type:Number}}),
-  sent_by :({name:{type:String},registrationNumber:{type:Number}}),
+  sent_by :({name:{type:String},registrationNumber:{type:Number},specialization:{type:String}}),
     
   Medicines: [{
       Medicine_name:{type:String},
