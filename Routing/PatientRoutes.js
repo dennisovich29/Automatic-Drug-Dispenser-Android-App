@@ -205,10 +205,10 @@ router.get("/previousPrescription",authenticateTokenPatient, async(req,res) => {
                 const details = {_id,type,sent_by,numberOfMedicines,Medicines,price}
                 listOfPrescriptions.push(details)
             }
-            res.status(200).json(listOfPrescriptions)
+            res.status(200).json({prescriptions_list:listOfPrescriptions})
         }
         else{
-            res.status(404).json({message:"No prescription prescribed yet."})
+            res.status(401).json({message:"No prescription prescribed yet."})
         }  
     }catch(error){
         res.status(500).json({error:"Internal Server Error",details:error.message})

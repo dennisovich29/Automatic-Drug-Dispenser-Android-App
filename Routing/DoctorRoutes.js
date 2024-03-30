@@ -147,7 +147,7 @@ router.post('/addMedicines/:uniqueId',authenticateTokenDoc, async (req, res) => 
                 }
             }
         }if(!addedPrescription){
-            res.status(401).json({message:"No medicine added to prescribe"})
+            res.status(404).json({message:"No medicine added to prescribe"})
         }    
         const prescriptionInstance = new prescription(newPrescription)
         const savedPrescription = await prescriptionInstance.save()
